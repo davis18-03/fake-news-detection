@@ -11,7 +11,9 @@ def lime_explanation(
 ):
     """Generate a LIME explanation for the given text and prediction function. Optionally save to HTML."""
     explainer = LimeTextExplainer(class_names=class_names)
-    exp = explainer.explain_instance(text, predict_proba_func, num_features=num_features)
+    exp = explainer.explain_instance(
+        text, predict_proba_func, num_features=num_features
+    )
     if save_path:
         exp.save_to_file(save_path)
     return exp

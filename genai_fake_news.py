@@ -161,7 +161,9 @@ def main():
     else:
         pred = classifier(sample_text)[0]
         print(
-            "Model prediction:", pred["label"], f"(confidence: {pred['score']:.2f})"
+            "Model prediction:",
+            pred["label"],
+            f"(confidence: {pred['score']:.2f})",
         )
 
 
