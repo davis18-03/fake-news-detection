@@ -15,7 +15,7 @@ spacy==3.8.0
 pytest==8.2.0
 flake8==7.0.0
 black==24.10.0
-﻿accelerate==1.6.0
+accelerate==1.6.0
 matplotlib==3.9.1
 # For LIME/SHAP explanations and model utils
 # The following are required by spacy and transformers, but pip will resolve them
