@@ -14,7 +14,6 @@ from sklearn.metrics import (
 from tqdm import tqdm
 
 from src.data_utils import load_data, shuffle_data
-from src.explain_utils import lime_explanation, shap_explanation
 from src.model_utils import get_classifier, get_device_info, predict_proba
 
 # --- Logging setup ---
