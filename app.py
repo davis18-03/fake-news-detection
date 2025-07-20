@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 import logging
 import re
 
@@ -35,18 +36,23 @@ def sanitize_input(text: str) -> str:
 # --- Sidebar for config ---
 st.sidebar.header("App Settings")
 st.sidebar.markdown("You can change these in config.yaml for advanced use.")
-st.sidebar.write(
-    f"**Model:** {config.get('finetuned_model_dir', 'distilbert-base-uncased-finetuned-sst-2-english')}"
+# Line 40 fixed: Extracting the long string to a variable
+model_display_name = config.get(
+    'finetuned_model_dir',
+    'distilbert-base-uncased-finetuned-sst-2-english'
 )
+st.sidebar.write(f"**Model:** {model_display_name}")
 st.sidebar.write(f"**Device:** {get_device_info()}")
 st.sidebar.write(f"**Batch size:** {config.get('batch_size', 32)}")
 st.sidebar.markdown("---")
-st.sidebar.markdown("**Privacy Note:** No user data is stored. All processing is local.")
+st.sidebar.markdown(
+    "**Privacy Note:** No user data is stored. All processing is local."
+)
 
 # --- Instructions ---
 st.markdown(
     """
-This app classifies news articles as **Fake** or **Real** using a transformer model and explains the 
+This app classifies news articles as **Fake** or **Real** using a transformer model and explains the
 prediction with LIME.
 - Paste or type a news article below.
 - Click **Classify & Explain** to see the result and explanation.
@@ -87,8 +93,10 @@ if st.button("Classify & Explain"):
                 conf = pred["score"]
                 label_str = "Fake" if label == "NEGATIVE" else "Real"
                 color = "#ff4b4b" if label_str == "Fake" else "#4bb543"
+                # Line 91 fixed: Breaking the f-string across multiple lines
                 st.markdown(
-                    f"**Prediction:** <span style='color:{color};font-size:1.3em'><b>{label_str}</b></span> "
+                    f"**Prediction:** <span style='color:{color};font-size:1.3em'>"
+                    f"<b>{label_str}</b></span>"
                     f"(confidence: {conf:.2f})",
                     unsafe_allow_html=True,
                 )

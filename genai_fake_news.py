@@ -98,9 +98,10 @@ def main():
 
     # User input for explanation
     print("\n[Privacy Note] No user data is stored. All processing is local.")
+    # Line 130 fixed
     user_input = input(
-        f"Enter article index (0-{len(docs)-1}) or paste custom news text for explanation "
-        f"(leave blank for index 0): "
+        f"Enter article index (0-{len(docs)-1}) or paste custom news text "
+        f"for explanation (leave blank for index 0): "
     )
     sanitized_input = sanitize_input(user_input)
     if sanitized_input.strip() == "":
@@ -119,7 +120,8 @@ def main():
             sample_text = sanitized_input
             sample_idx = None
             if len(sample_text) < 30:
-                print("[Error] Please enter at least 30 characters for a meaningful explanation.")
+                print("[Error] Please enter at least 30 characters for a meaningful "
+                      "explanation.")
                 sys.exit(1)
             if len(sample_text) > 3000:
                 print("[Error] Text is too long. Please limit to 3000 characters.")
@@ -127,7 +129,11 @@ def main():
             logger.info("Using custom text for explanation.")
 
     # LIME explanation
-    lime_path = f"{config.get('lime_explanation_prefix', 'lime_explanation_')}{sample_idx if sample_idx is not None else 'custom'}.html"
+    # Line 142 fixed
+    lime_path = (
+        f"{config.get('lime_explanation_prefix', 'lime_explanation_')}"
+        f"{sample_idx if sample_idx is not None else 'custom'}.html"
+    )
     exp = lime_explanation(
         sample_text,
         lambda texts: predict_proba(classifier, texts),
@@ -139,7 +145,10 @@ def main():
     print("LIME explanation:", exp.as_list())
 
     # SHAP explanation
-    shap_path = f"{config.get('shap_explanation_prefix', 'shap_explanation_')}{sample_idx if sample_idx is not None else 'custom'}.html"
+    shap_path = (
+        f"{config.get('shap_explanation_prefix', 'shap_explanation_')}"
+        f"{sample_idx if sample_idx is not None else 'custom'}.html"
+    )
     shap_explanation(
         sample_text,
         lambda texts: predict_proba(classifier, texts),

@@ -12,7 +12,9 @@ def get_classifier(
     finetuned_model_dir: str = "./finetuned_model",
     default_model: str = "distilbert-base-uncased-finetuned-sst-2-english",
 ) -> Any:
-    """Load a fine-tuned model if available, else load the default model. Returns a HuggingFace pipeline."""
+    """Load a fine-tuned model if available, else load the default model.
+    Returns a HuggingFace pipeline.
+    """
     if os.path.isdir(finetuned_model_dir) and os.path.isfile(
         os.path.join(finetuned_model_dir, "config.json")
     ):
