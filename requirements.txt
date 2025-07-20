@@ -1,4 +1,3 @@
-# Core ML and NLP libraries
 transformers==4.40.0
 datasets==2.18.0
 torch==2.7.1+cu118
