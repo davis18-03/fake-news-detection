@@ -152,7 +152,6 @@ def main():
     print("Sample text:")
     print(sample_text)
     if sample_idx is not None:
-        print("True label:", "Fake" if labels[sample_idx] == 0 else "Real")
         print(
             "Model prediction:",
             preds[sample_idx]["label"],
