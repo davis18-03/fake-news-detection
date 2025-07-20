@@ -1,13 +1,16 @@
 import logging
-import os
 from typing import Tuple
 
 import torch
 import yaml
 from datasets import Dataset, DatasetDict
 from sklearn.model_selection import train_test_split
-from transformers import (AutoModelForSequenceClassification, AutoTokenizer,
-                          Trainer, TrainingArguments)
+from transformers import (
+    AutoModelForSequenceClassification,
+    AutoTokenizer,
+    Trainer,
+    TrainingArguments,
+)
 
 from src.data_utils import load_data, shuffle_data
 from src.model_utils import get_device_info
@@ -45,7 +48,9 @@ def main():
 
     logger.info(f"Loading tokenizer and model: {model_name}")
     tokenizer = AutoTokenizer.from_pretrained(model_name)
-    model = AutoModelForSequenceClassification.from_pretrained(model_name, num_labels=num_labels)
+    model = AutoModelForSequenceClassification.from_pretrained(
+        model_name, num_labels=num_labels
+    )
 
     logger.info("Tokenizing data...")
     tokenized_datasets = dataset.map(
@@ -80,13 +85,14 @@ def main():
     )
 
     def compute_metrics(eval_pred):
-        from sklearn.metrics import (accuracy_score,
-                                     precision_recall_fscore_support)
+        from sklearn.metrics import accuracy_score, precision_recall_fscore_support
 
         logits, labels = eval_pred
         preds = logits.argmax(axis=-1)
         acc = accuracy_score(labels, preds)
-        precision, recall, f1, _ = precision_recall_fscore_support(labels, preds, average="binary")
+        precision, recall, f1, _ = precision_recall_fscore_support(
+            labels, preds, average="binary"
+        )
         return {"accuracy": acc, "precision": precision, "recall": recall, "f1": f1}
 
     trainer = Trainer(

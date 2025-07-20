@@ -1,8 +1,6 @@
 import logging
-import os
 import re
 
-import numpy as np
 import streamlit as st
 import yaml
 
@@ -48,7 +46,8 @@ st.sidebar.markdown("**Privacy Note:** No user data is stored. All processing is
 # --- Instructions ---
 st.markdown(
     """
-This app classifies news articles as **Fake** or **Real** using a transformer model and explains the prediction with LIME.
+This app classifies news articles as **Fake** or **Real** using a transformer model and explains the 
+prediction with LIME.
 - Paste or type a news article below.
 - Click **Classify & Explain** to see the result and explanation.
 - You can download the LIME explanation as an HTML file.
@@ -60,7 +59,8 @@ This app classifies news articles as **Fake** or **Real** using a transformer mo
 @st.cache_resource(show_spinner=True)
 def load_classifier():
     return get_classifier(
-        finetuned_model_dir=config["finetuned_model_dir"], default_model=config["default_model"]
+        finetuned_model_dir=config["finetuned_model_dir"],
+        default_model=config["default_model"],
     )
 
 
@@ -88,7 +88,8 @@ if st.button("Classify & Explain"):
                 label_str = "Fake" if label == "NEGATIVE" else "Real"
                 color = "#ff4b4b" if label_str == "Fake" else "#4bb543"
                 st.markdown(
-                    f"**Prediction:** <span style='color:{color};font-size:1.3em'><b>{label_str}</b></span> (confidence: {conf:.2f})",
+                    f"**Prediction:** <span style='color:{color};font-size:1.3em'><b>{label_str}</b></span> "
+                    f"(confidence: {conf:.2f})",
                     unsafe_allow_html=True,
                 )
                 exp = lime_explanation(

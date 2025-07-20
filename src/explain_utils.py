@@ -30,7 +30,6 @@ def shap_explanation(text: str, predict_proba_func, tokenizer, save_path: str = 
         except AttributeError:
             # Fallback: save the text plot as HTML using matplotlib
             import matplotlib.pyplot as plt
-
-            fig = shap.plots.text(shap_values, display=False, show=False)
+            shap.plots.text(shap_values, display=False, show=False)
             plt.savefig(save_path)
     return shap_values

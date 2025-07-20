@@ -1,14 +1,16 @@
 import argparse
 import logging
-import os
 import re
 import sys
-
-import pandas as pd
 import yaml
-from sklearn.metrics import (accuracy_score, classification_report,
-                             confusion_matrix, f1_score, precision_score,
-                             recall_score)
+from sklearn.metrics import (
+    accuracy_score,
+    classification_report,
+    confusion_matrix,
+    f1_score,
+    precision_score,
+    recall_score,
+)
 from tqdm import tqdm
 
 from src.data_utils import load_data, shuffle_data
@@ -20,13 +22,11 @@ logging.basicConfig(level=logging.INFO, format="%(asctime)s %(levelname)s %(mess
 logger = logging.getLogger(__name__)
 
 
-# --- Config loading ---
 def load_config(config_path="config.yaml"):
     with open(config_path, "r") as f:
         return yaml.safe_load(f)
 
 
-# --- CLI args ---
 def parse_args():
     parser = argparse.ArgumentParser(description="Fake News Detection & Explainability")
     parser.add_argument("--config", type=str, default="config.yaml", help="Path to config file")
@@ -42,7 +42,6 @@ def sanitize_input(text: str) -> str:
     return text
 
 
-# --- Main ---
 def main():
     args = parse_args()
     config = load_config(args.config)
@@ -61,7 +60,8 @@ def main():
 
     # Model loading
     classifier = get_classifier(
-        finetuned_model_dir=config["finetuned_model_dir"], default_model=config["default_model"]
+        finetuned_model_dir=config["finetuned_model_dir"],
+        default_model=config["default_model"],
     )
     logger.info(f"Device: {get_device_info()}")
 
@@ -69,7 +69,6 @@ def main():
     logger.info("Evaluating model on the entire dataset...")
     batch_size = config.get("batch_size", 32)
     preds = []
-    total_batches = (len(docs) + batch_size - 1) // batch_size
     for i in tqdm(range(0, len(docs), batch_size), desc="Batches", unit="batch"):
         batch = docs[i : i + batch_size]
         preds.extend(classifier(batch, truncation=True))
@@ -88,7 +87,8 @@ def main():
     logger.info(f"F1-score: {f1:.4f}")
     logger.info(f"Confusion Matrix:\n{cm}")
     logger.info(
-        f'Classification Report:\n{classification_report(labels, pred_labels, target_names=["Fake", "Real"])})'
+        "Classification Report:\n%s",
+        classification_report(labels, pred_labels, target_names=["Fake", "Real"]),
     )
 
     # Save predictions
@@ -99,18 +99,19 @@ def main():
     # User input for explanation
     print("\n[Privacy Note] No user data is stored. All processing is local.")
     user_input = input(
-        f"Enter article index (0-{len(docs)-1}) or paste custom news text for explanation (leave blank for index 0): "
+        f"Enter article index (0-{len(docs)-1}) or paste custom news text for explanation "
+        f"(leave blank for index 0): "
     )
     sanitized_input = sanitize_input(user_input)
     if sanitized_input.strip() == "":
         sample_idx = 0
         sample_text = docs[sample_idx]
-        logger.info(f"Using article at index 0.")
+        logger.info("Using article at index 0.")
     else:
         try:
             sample_idx = int(sanitized_input)
             if not (0 <= sample_idx < len(docs)):
-                logger.warning(f"Index out of range. Using 0.")
+                logger.warning("Index out of range. Using 0.")
                 sample_idx = 0
             sample_text = docs[sample_idx]
             logger.info(f"Using article at index {sample_idx}.")
@@ -159,7 +160,9 @@ def main():
         )
     else:
         pred = classifier(sample_text)[0]
-        print("Model prediction:", pred["label"], f"(confidence: {pred['score']:.2f})")
+        print(
+            "Model prediction:", pred["label"], f"(confidence: {pred['score']:.2f})"
+        )
 
 
 if __name__ == "__main__":

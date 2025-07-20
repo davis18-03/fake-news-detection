@@ -1,6 +1,6 @@
 import logging
 import os
-from typing import Any, Callable
+from typing import Any
 
 import torch
 from transformers import pipeline
@@ -26,7 +26,9 @@ def get_classifier(
             logger.info(f"Using fine-tuned model from {finetuned_model_dir}")
             return classifier
         except Exception as e:
-            logger.warning(f"Failed to load fine-tuned model: {e}\nFalling back to default model.")
+            logger.warning(
+                f"Failed to load fine-tuned model: {e}\nFalling back to default model."
+            )
     classifier = pipeline(
         "text-classification",
         model=default_model,
