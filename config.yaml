@@ -1,0 +1,9 @@
+data_dir: data
+finetuned_model_dir: ./finetuned_model
+default_model: distilbert-base-uncased-finetuned-sst-2-english
+batch_size: 32
+max_length: 256
+seed: 42
+output_pred_csv: predictions.csv
+lime_explanation_prefix: lime_explanation_
+shap_explanation_prefix: shap_explanation_ 
