@@ -11,5 +11,4 @@ with open(input_file, 'r', encoding='utf-8-sig') as f:
 
 with open(input_file, 'w', encoding='utf-8') as f:
     f.write(content)
-
-print('BOM removed from requirements.txt (if present).') 
+print('BOM removed from requirements.txt (if present).')
