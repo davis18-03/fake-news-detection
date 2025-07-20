@@ -30,6 +30,8 @@ def lime_explanation(
     save_path: str = None,
 ):
     """Generate a LIME explanation for the given text and prediction function. Optionally save to HTML."""
+    if len(text.strip()) < 30:
+        raise ValueError("Input text is too short for a meaningful explanation (min 30 characters).")
     explainer = LimeTextExplainer(class_names=class_names)
     exp = explainer.explain_instance(
         text, predict_proba_func, num_features=num_features
